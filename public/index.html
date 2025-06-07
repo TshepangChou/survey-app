@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Survey</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Survey Form</h1>
+  <form id="surveyForm">
+    <input type="text" id="name" placeholder="Name" required><br>
+    <input type="text" id="surname" placeholder="Surname" required><br>
+    <input type="date" id="dob" required><br>
+    <input type="number" id="age" placeholder="Age" min="5" max="120" required><br>
+
+    <p>Favourite Food:</p>
+    <label><input type="checkbox" value="Pizza"> Pizza</label>
+    <label><input type="checkbox" value="Pasta"> Pasta</label>
+    <label><input type="checkbox" value="Pap and Wors"> Pap and Wors</label>
+    <label><input type="checkbox" value="Chicken Stir Fry"> Chicken Stir Fry</label>
+    <label><input type="checkbox" value="Beef Stir Fry"> Beef Stir Fry</label>
+    <label><input type="checkbox" value="Other"> Other</label>
+
+    <p>I like to eat out (1–5)</p>
+    <input type="radio" name="eat" value="1" required>
+    <input type="radio" name="eat" value="2">
+    <input type="radio" name="eat" value="3">
+    <input type="radio" name="eat" value="4">
+    <input type="radio" name="eat" value="5">
+
+    <p>I like to watch movies (1–5)</p>
+    <input type="radio" name="movies" value="1" required>
+    <input type="radio" name="movies" value="2">
+    <input type="radio" name="movies" value="3">
+    <input type="radio" name="movies" value="4">
+    <input type="radio" name="movies" value="5">
+
+    <p>I like to watch TV (1–5)</p>
+    <input type="radio" name="tv" value="1" required>
+    <input type="radio" name="tv" value="2">
+    <input type="radio" name="tv" value="3">
+    <input type="radio" name="tv" value="4">
+    <input type="radio" name="tv" value="5">
+
+    <p>I like to listen to radio (1–5)</p>
+    <input type="radio" name="radio" value="1" required>
+    <input type="radio" name="radio" value="2">
+    <input type="radio" name="radio" value="3">
+    <input type="radio" name="radio" value="4">
+    <input type="radio" name="radio" value="5">
+
+    <br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <a href="results.html">View Results</a>
+
+  <script>
+    document.getElementById("surveyForm").onsubmit = async function(e) {
+      e.preventDefault();
+
+      const favFood = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+      const eat = document.querySelector('input[name="eat"]:checked')?.value;
+      const movies = document.querySelector('input[name="movies"]:checked')?.value;
+      const tv = document.querySelector('input[name="tv"]:checked')?.value;
+      const radio = document.querySelector('input[name="radio"]:checked')?.value;
+
+      const data = {
+        name: document.getElementById("name").value,
+        surname: document.getElementById("surname").value,
+        dob: document.getElementById("dob").value,
+        age: Number(document.getElementById("age").value),
+        fav_food: favFood,
+        eat_out: Number(eat),
+        watch_movies: Number(movies),
+        watch_tv: Number(tv),
+        listen_radio: Number(radio),
+      };
+
+      const res = await fetch("/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert("Survey submitted!");
+        document.getElementById("surveyForm").reset();
+      } else {
+        alert("Submission failed.");
+      }
+    };
+  </script>
+</body>
+</html>

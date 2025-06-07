@@ -1,0 +1,12 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 40px;
+  line-height: 1.6;
+}
+input, button {
+  margin: 5px;
+  padding: 8px;
+}
+form {
+  margin-bottom: 20px;
+}

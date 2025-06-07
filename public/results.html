@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Results</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Survey Statistics</h1>
+  <div id="results"></div>
+  <a href="index.html">Back</a>
+
+  <script>
+    fetch("/results")
+      .then(res => res.json())
+      .then(data => {
+        const results = document.getElementById("results");
+        if (data.message) {
+          results.innerHTML = `<p>${data.message}</p>`;
+          return;
+        }
+
+        results.innerHTML = `
+          <p>Total Surveys: ${data.total}</p>
+          <p>Average Age: ${data.avgAge}</p>
+          <p>Oldest Age: ${data.oldest}</p>
+          <p>Youngest Age: ${data.youngest}</p>
+          <p>Percentage who like Pizza: ${data.pizzaPct}%</p>
+          <p>Average 'Eat Out' rating: ${data.eatOutAvg}</p>
+        `;
+      });
+  </script>
+</body>
+</html>
